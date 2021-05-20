@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OnlineViewController">
+   <children>
+      <Label layoutX="210.0" layoutY="25.0" prefHeight="30.0" prefWidth="179.0" text="Create or join room">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tableView" layoutX="69.0" layoutY="94.0" prefHeight="250.0" prefWidth="491.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="69.80001068115234" text="ID" />
+          <TableColumn fx:id="host" minWidth="0.0" prefWidth="112.0" text="Host" />
+            <TableColumn fx:id="name" prefWidth="142.0" text="Name" />
+            <TableColumn fx:id="time" minWidth="8.0" prefWidth="166.80001831054688" text="Time per move(seconds)" />
+        </columns>
+      </TableView>
+      <Button fx:id="joinButton" layoutX="522.0" layoutY="352.0" mnemonicParsing="false" onAction="#onJoinRoom" text="Join" />
+      <Button fx:id="createButton" layoutX="452.0" layoutY="55.0" mnemonicParsing="false" onAction="#onCreateRoom" text="Create new room" />
+      <Label layoutX="69.0" layoutY="72.0" text="Available rooms" />
+   </children>
+</AnchorPane>

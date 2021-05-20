@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="243.0" prefWidth="363.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Dialogs.JoinRoomDialogController">
+   <children>
+      <Label layoutX="52.0" layoutY="151.0" text="Room password: " />
+      <PasswordField fx:id="password" layoutX="163.0" layoutY="147.0" />
+      <Button cancelButton="true" layoutX="212.0" layoutY="189.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+      <Button layoutX="274.0" layoutY="189.0" mnemonicParsing="false" onAction="#onJoin" text="Join" />
+      <Label layoutX="51.0" layoutY="106.0" text="Your username: " />
+      <TextField fx:id="username" layoutX="163.0" layoutY="102.0" />
+      <Label layoutX="155.0" layoutY="14.0" text="Join room" />
+      <Label layoutX="51.0" layoutY="57.0" text="Room ID:" />
+      <TextField fx:id="roomID" layoutX="163.0" layoutY="53.0" />
+   </children>
+</AnchorPane>
