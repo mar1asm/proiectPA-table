@@ -1,6 +1,7 @@
 package Game;
 
 import Controllers.GameController;
+import Utils.ServerConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        ServerConnection.connect();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/App.fxml"));
         primaryStage.setTitle("Backgammon");
         primaryStage.setScene(new Scene(root, 600, 450));

@@ -17,6 +17,23 @@ import java.util.ResourceBundle;
 
 
 public class GameController implements Initializable {
+    static Player player;
+    static GameState gameState;
+
+    MoveController moveController;
+
+    public GameController(List<Pip> pips) {
+        moveController = new MoveController(pips);
+    }
+
+    public GameController(){}
+
+    public static void setGameParams(String playerID, int playerType, String roomID){
+        player=new Player(playerID, playerType);
+        gameState=new GameState();
+        gameState.setGameID(roomID);
+        waitForGameStart();
+    }
 
     public static int PIP_WIDTH;
     public static int PIP_HEIGHT;
@@ -38,7 +55,7 @@ public class GameController implements Initializable {
     private static PieseScoase pieseScoaseNegru;
 
 
-    public  Pane createContent() {
+    public Pane createContent() {
         PIP_WIDTH = screenWidth / 13;
         PIP_HEIGHT = screenHeight / 2;
         Pane root = new Pane();
@@ -80,6 +97,7 @@ public class GameController implements Initializable {
                 pipGroup.getChildren().add(pip);
             }
         }
+        GameController gameController = new GameController(pips);
         return root;
     }
 
@@ -128,6 +146,23 @@ public class GameController implements Initializable {
 
 
     }
+
+    public static PieseScoase getPieseScoase(int type) {
+        return type == -1 ? pieseScoaseAlb : pieseScoaseNegru;
+    }
+
+    public static void waitForGameStart(){
+        // ?????????????????????? nujt
+        System.out.println(gameState.getGameID());
+    }
+
+
+    public void play(){
+
+    }
+
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

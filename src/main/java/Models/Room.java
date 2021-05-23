@@ -4,6 +4,7 @@ public class Room {
     private String id;
     private String name;
     private String host;
+    private boolean started;
     private int timePerMove;
 
     public Room(String id, String name, String host, int timePerMove) {
@@ -11,6 +12,28 @@ public class Room {
         this.name = name;
         this.host = host;
         this.timePerMove = timePerMove;
+    }
+
+    public Room(String id, String name, String host, boolean started) {
+        this.id = id;
+        this.name = name;
+        this.host = host;
+        this.started = started;
+    }
+
+    public Room(String id, String name, String host, boolean started, int timePerMove) {
+        this.id = id;
+        this.name = name;
+        this.host = host;
+        this.started = started;
+        this.timePerMove = timePerMove;
+    }
+
+    public Room(String id, String name, String host) {
+        this.id = id;
+        this.name = name;
+        this.host = host;
+        this.timePerMove=30;
     }
 
     public String getId() {
@@ -43,6 +66,14 @@ public class Room {
 
     public void setTimePerMove(int timePerMove) {
         this.timePerMove = timePerMove;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 
     @Override

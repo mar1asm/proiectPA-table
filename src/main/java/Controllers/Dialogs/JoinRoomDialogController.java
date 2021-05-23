@@ -1,6 +1,8 @@
 package Controllers.Dialogs;
 
 import Controllers.AppController;
+import Controllers.GameController;
+import Models.RoomModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -10,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+
+import static Models.RoomModel.joinRoom;
 
 public class JoinRoomDialogController {
 
@@ -32,10 +36,13 @@ public class JoinRoomDialogController {
     }
 
     public void onJoin(ActionEvent actionEvent) {
-        if (username.getText().equals("") || password.getText().equals(""))
+        if (roomID.getText().equals("") || username.getText().equals(""))
             return;
         try {
             AppController.showGameWindow();
+            GameController.setGameParams("2", 2,  roomID.getText() );
+            joinRoom(roomID.getText(), password.getText(), username.getText());
+           // RoomModel.hideRoom(roomID.getText());
         } catch (IOException e) {
             e.printStackTrace();
         }

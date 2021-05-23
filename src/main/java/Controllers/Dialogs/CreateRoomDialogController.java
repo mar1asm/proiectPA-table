@@ -1,6 +1,9 @@
 package Controllers.Dialogs;
 
+import Controllers.AppController;
+import Controllers.GameController;
 import Models.Room;
+import Models.RoomModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,6 +28,9 @@ public class CreateRoomDialogController implements Initializable {
     private TextField username;
 
     @FXML
+    private TextField roomName;
+
+    @FXML
     private PasswordField password;
 
 
@@ -34,10 +41,16 @@ public class CreateRoomDialogController implements Initializable {
     }
 
     public void onCreate(ActionEvent actionEvent) {
-        if (username.getText().equals("") || password.getText().equals("") || timePickerCombo.getSelectionModel().getSelectedItem().equals(""))
+        if (username.getText().equals("") || password.getText().equals("") || roomName.getText().equals("") || timePickerCombo.getSelectionModel().getSelectedItem().equals(""))
             return;
 
-        //create && start
+        try {
+            RoomModel.createRoom(username.getText(), password.getText(), roomName.getText(),Integer.parseInt(timePickerCombo.getSelectionModel().getSelectedItem() ));
+            AppController.showGameWindow();
+            //GameController.setGameParams("1", 1, "5");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         closeWindow(actionEvent);
     }

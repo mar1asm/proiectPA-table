@@ -1,6 +1,7 @@
 package Controllers.GameComponents;
 
 import Controllers.GameController;
+import Controllers.MoveController;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -9,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,8 +76,11 @@ public class Pip extends Pane {
     }
 
     private void handleClick(MouseEvent handler) {
-        System.out.println("Clicked");
-       // MoveController.pipClicked(index);
+        try {
+            MoveController.pipClicked(index);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

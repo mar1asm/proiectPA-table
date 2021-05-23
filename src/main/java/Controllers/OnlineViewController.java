@@ -29,6 +29,8 @@ public class OnlineViewController implements Initializable {
     @FXML
     private TableColumn<Room, String> id;
     @FXML
+    private TableColumn<Room, String> name;
+    @FXML
     private TableColumn<Room, String> host;
     @FXML
     private TableColumn<Room, Integer> time;
@@ -37,10 +39,12 @@ public class OnlineViewController implements Initializable {
 
     public void onJoinRoom(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dialogs/JoinRoomDialog.fxml"));
-        Room room = tableView.getSelectionModel().getSelectedItem();
+        //Room room = tableView.getSelectionModel().getSelectedItem();
         //System.out.println(room);
         LoadStage(loader);
         try {
+            if (tableView.getSelectionModel().getSelectedItem()==null)
+                return;
             String roomID = tableView.getSelectionModel().getSelectedItem().getId();
 
             JoinRoomDialogController joinRoomDialogController = loader.getController();
@@ -75,7 +79,8 @@ public class OnlineViewController implements Initializable {
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         host.setCellValueFactory(new PropertyValueFactory<>("host"));
         time.setCellValueFactory(new PropertyValueFactory<>("timePerMove"));
-        data = FXCollections.observableArrayList(RoomModel.getAll());
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        data = FXCollections.observableArrayList(RoomModel.getAvailableRooms());
         tableView.setItems(data);
     }
 }

@@ -4,20 +4,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="246.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Dialogs.CreateRoomDialogController">
+<AnchorPane prefHeight="288.0" prefWidth="398.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Dialogs.CreateRoomDialogController">
    <children>
       <Label layoutX="130.0" layoutY="28.0" text="Create new room">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="51.0" layoutY="127.0" text="Room password: " />
-      <PasswordField fx:id="password" disable="true" layoutX="159.0" layoutY="123.0" />
-      <Label layoutX="51.0" layoutY="165.0" text="Time per move: " />
-      <ComboBox fx:id="timePickerCombo" layoutX="158.0" layoutY="161.0" prefWidth="150.0" />
-      <Button cancelButton="true" layoutX="242.0" layoutY="197.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
-      <Button layoutX="309.0" layoutY="197.0" mnemonicParsing="false" onAction="#onCreate" text="Create" />
+      <Label layoutX="51.0" layoutY="171.0" text="Room password: " />
+      <PasswordField fx:id="password" layoutX="159.0" layoutY="167.0" />
+      <Label layoutX="51.0" layoutY="209.0" text="Time per move: " />
+      <ComboBox fx:id="timePickerCombo" layoutX="158.0" layoutY="205.0" prefWidth="150.0" />
+      <Button cancelButton="true" layoutX="242.0" layoutY="241.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+      <Button layoutX="309.0" layoutY="241.0" mnemonicParsing="false" onAction="#onCreate" text="Create" />
       <Label layoutX="51.0" layoutY="90.0" text="Your username: " />
       <TextField fx:id="username" layoutX="159.0" layoutY="86.0" />
+      <Label layoutX="51.0" layoutY="129.0" text="Room name:" />
+      <TextField fx:id="roomName" layoutX="159.0" layoutY="125.0" />
    </children>
 </AnchorPane>
