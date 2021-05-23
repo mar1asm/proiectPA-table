@@ -32,7 +32,7 @@ public class AppController implements Initializable {
 
         stage.setScene(scene);
         stage.show();
-        gc.initGame();
+        //gc.initGame();
     }
 
     @Override

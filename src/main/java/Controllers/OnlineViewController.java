@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 
@@ -43,7 +42,7 @@ public class OnlineViewController implements Initializable {
         //System.out.println(room);
         LoadStage(loader);
         try {
-            if (tableView.getSelectionModel().getSelectedItem()==null)
+            if (tableView.getSelectionModel().getSelectedItem() == null)
                 return;
             String roomID = tableView.getSelectionModel().getSelectedItem().getId();
 

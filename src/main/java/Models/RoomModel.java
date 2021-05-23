@@ -82,10 +82,6 @@ public class RoomModel {
 
 
         sendToServer(createRoomString);
-
-        String createRoomResponseString = getFromServer();
-
-        System.out.println(createRoomResponseString);
     }
 
    // public static void deleteRoom(String id) throws IOException {

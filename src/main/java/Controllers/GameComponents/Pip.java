@@ -1,6 +1,7 @@
 package Controllers.GameComponents;
 
 import Controllers.GameController;
+import Controllers.GameState;
 import Controllers.MoveController;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -28,6 +29,13 @@ public class Pip extends Pane {
 
     private List<Piece> pieces = new ArrayList<>();
 
+    private Triangle triangle;
+    private Color triangleOriginalColor;
+    private Color highlightedColor = Color.valueOf("#FFFF00");
+    private boolean highlighted = false;
+
+
+
     public Pip(int index, Color color, int x, int y, boolean isReversed) {
         this.index = index;
         this.setWidth(GameController.PIP_WIDTH);
@@ -38,10 +46,26 @@ public class Pip extends Pane {
         Rectangle rectangle = new Rectangle(0, 0, GameController.PIP_WIDTH+2, GameController.PIP_HEIGHT+2); //marele workaround
         rectangle.setFill(Color.valueOf("#996c54"));
         this.getChildren().add(rectangle);
-        Triangle triangle = new Triangle(new Point2D(0, 0), new Point2D(GameController.PIP_WIDTH, 0), new Point2D((int) ((GameController.PIP_WIDTH) /
+        triangle = new Triangle(new Point2D(0, 0), new Point2D(GameController.PIP_WIDTH, 0), new Point2D((int) ((GameController.PIP_WIDTH) /
                 2), (int) (GameController.PIP_HEIGHT / 20 * 19)), color);
+        triangleOriginalColor=color;
         this.getChildren().add(triangle);
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, this::handleClick);
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+
+        if(highlighted) {
+            triangle.setFill(highlightedColor);
+        } else {
+            triangle.setFill(triangleOriginalColor);
+        }
+
+    }
+
+    public boolean isHighlighted() {
+        return highlighted;
     }
 
     public boolean isEmpty() {
@@ -76,6 +100,8 @@ public class Pip extends Pane {
     }
 
     private void handleClick(MouseEvent handler) {
+        if (!GameState.isMyTurn())
+            return;
         try {
             MoveController.pipClicked(index);
         } catch (IOException e) {

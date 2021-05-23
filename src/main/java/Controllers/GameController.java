@@ -1,9 +1,8 @@
 package Controllers;
 
-import Controllers.GameComponents.Piece;
-import Controllers.GameComponents.PieceType;
-import Controllers.GameComponents.PieseScoase;
-import Controllers.GameComponents.Pip;
+import Controllers.GameComponents.*;
+import Utils.ServerListener;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
@@ -12,8 +11,12 @@ import javafx.stage.Screen;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static Utils.ServerConnection.objectMapper;
+import static javafx.application.Platform.runLater;
 
 
 public class GameController implements Initializable {
@@ -22,15 +25,12 @@ public class GameController implements Initializable {
 
     MoveController moveController;
 
-    public GameController(List<Pip> pips) {
-        moveController = new MoveController(pips);
+    public GameController() {
     }
 
-    public GameController(){}
-
-    public static void setGameParams(String playerID, int playerType, String roomID){
-        player=new Player(playerID, playerType);
-        gameState=new GameState();
+    public static void setGameParams(String playerID, int playerType, String roomID) {
+        player = new Player(playerID, playerType);
+        gameState = new GameState();
         gameState.setGameID(roomID);
         waitForGameStart();
     }
@@ -41,7 +41,7 @@ public class GameController implements Initializable {
     private final Group pieceGroup = new Group();
     private final Group pipGroup = new Group();
 
-    private final List<Pip> pips = new ArrayList<>();
+    private static List<Pip> pips = new ArrayList<>();
 
 
     private final Color dark = Color.valueOf("#e6c0ac");
@@ -51,16 +51,22 @@ public class GameController implements Initializable {
     int screenWidth = (int) Screen.getPrimary().getBounds().getWidth() - 100;
     int screenHeight = (int) Screen.getPrimary().getBounds().getHeight() - 70;
 
-    private static PieseScoase pieseScoaseAlb;
-    private static PieseScoase pieseScoaseNegru;
+    public static PieseScoase pieseScoaseAlb;
+    public static PieseScoase pieseScoaseNegru;
 
 
     public Pane createContent() {
+
         PIP_WIDTH = screenWidth / 13;
         PIP_HEIGHT = screenHeight / 2;
+
+
         Pane root = new Pane();
         root.setPrefSize(PIP_WIDTH * 13, PIP_HEIGHT * 2);
         root.getChildren().addAll(pipGroup, pieceGroup);
+
+        //Header h=new Header(100, screenWidth);
+        //root.getChildren().add(h);
 
         pieseScoaseAlb = new PieseScoase(6 * PIP_WIDTH, 0);
         pieseScoaseNegru = new PieseScoase(6 * PIP_WIDTH, PIP_HEIGHT);
@@ -96,76 +102,70 @@ public class GameController implements Initializable {
                 pips.add(pip);
                 pipGroup.getChildren().add(pip);
             }
+            moveController = new MoveController(pips);
         }
-        GameController gameController = new GameController(pips);
         return root;
     }
 
-    public void initGame() {
 
+    public static void updateBoard(String config) {
+        try {
+            var response = objectMapper.readValue(config, HashMap.class);
+            var gameState = (HashMap<String, Object>) response.get("gameState");
 
-        for (int i = 0; i < 5; i++) {
-            Piece piece = new Piece(PieceType.BLACK);
-            pips.get(5).addPiece(piece);
+            for (int i = 0; i < 24; i++) {
+                Piece piece = pips.get(i).movePiece();
+                while (piece != null) {
+                    piece.dissapear();
+                    piece = pips.get(i).movePiece();
+                }
+            }
+            for (int i = 0; i < 24; i++) {
+                String index = String.valueOf(i);
+                var pip = (HashMap<String, Object>) gameState.get(index);
+                int nbPieces = (Integer) pip.get("nb");
+                if (nbPieces != 0) {
+                    for (int j = 0; j < nbPieces; j++) {
+                        Piece piece = new Piece(pip.get("type").equals("WHITE") ? PieceType.WHITE : PieceType.BLACK);
+
+                        int finalI = i;
+                        runLater(() -> pips.get(finalI).addPiece(piece));
+                    }
+                }
+
+            }
+            while (pieseScoaseNegru.getPieces().size()>0)
+                pieseScoaseNegru.movePiece().dissapear();
+            while (pieseScoaseAlb.getPieces().size()>0)
+                pieseScoaseAlb.movePiece().dissapear();
+
+            for (int j=0; j<(Integer) gameState.get("removedBlack"); j++)
+                pieseScoaseNegru.addPiece(new Piece (PieceType.BLACK));
+            for (int j=0; j<(Integer) gameState.get("removedWhite"); j++)
+                pieseScoaseAlb.addPiece(new Piece (PieceType.WHITE));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-
-        for (int i = 0; i < 3; i++) {
-            Piece piece = new Piece(PieceType.BLACK);
-            pips.get(7).addPiece(piece);
-        }
-
-        for (int i = 0; i < 5; i++) {
-            Piece piece = new Piece(PieceType.BLACK);
-            pips.get(12).addPiece(piece);
-        }
-
-        for (int i = 0; i < 5; i++) {
-            Piece piece = new Piece(PieceType.WHITE);
-            pips.get(11).addPiece(piece);
-        }
-
-        for (int i = 0; i < 2; i++) {
-            Piece piece = new Piece(PieceType.BLACK);
-            pips.get(23).addPiece(piece);
-        }
-
-        for (int i = 0; i < 2; i++) {
-            Piece piece = new Piece(PieceType.WHITE);
-            pips.get(0).addPiece(piece);
-        }
-
-        for (int i = 0; i < 3; i++) {
-            Piece piece = new Piece(PieceType.WHITE);
-            pips.get(16).addPiece(piece);
-        }
-
-        for (int i = 0; i < 5; i++) {
-            Piece piece = new Piece(PieceType.WHITE);
-            pips.get(18).addPiece(piece);
-        }
-
-
     }
 
     public static PieseScoase getPieseScoase(int type) {
-        return type == -1 ? pieseScoaseAlb : pieseScoaseNegru;
+        return type == 1 ? pieseScoaseAlb : pieseScoaseNegru;
     }
 
-    public static void waitForGameStart(){
+    public static void waitForGameStart() {
         // ?????????????????????? nujt
         System.out.println(gameState.getGameID());
     }
 
 
-    public void play(){
-
+    public void waitForMove() {
+        //
     }
-
-
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        Thread listener = new Thread(new ServerListener());
+        listener.start();
     }
 }

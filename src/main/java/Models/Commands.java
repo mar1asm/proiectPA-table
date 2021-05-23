@@ -1,5 +1,7 @@
 package Models;
 
+import Controllers.GameState;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,15 +32,17 @@ public class Commands {
         moveParams.put("from", from);
         moveParams.put("to", to);
 
-        moveRequest.put("action", "movePiece");
+        moveRequest.put("action", "MovePiece");
         moveRequest.put("params", moveParams);
         String createRoomString = objectMapper.writeValueAsString(moveRequest);
 
 
         sendToServer(createRoomString);
 
-        String createRoomResponseString = getFromServer();
+        //GameState.setMyTurn(false);
 
-        System.out.println(createRoomResponseString);
+       //String createRoomResponseString = getFromServer();
+
+       //System.out.println(createRoomResponseString);
     }
 }

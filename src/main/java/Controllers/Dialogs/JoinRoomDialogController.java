@@ -2,6 +2,7 @@ package Controllers.Dialogs;
 
 import Controllers.AppController;
 import Controllers.GameController;
+import Controllers.GameState;
 import Models.RoomModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,9 +41,12 @@ public class JoinRoomDialogController {
             return;
         try {
             AppController.showGameWindow();
-            GameController.setGameParams("2", 2,  roomID.getText() );
+            GameController.setGameParams("2", 2, roomID.getText());
             joinRoom(roomID.getText(), password.getText(), username.getText());
-           // RoomModel.hideRoom(roomID.getText());
+            GameState.setUsername(username.getText());
+            GameState.setMyTurn(false);
+            GameState.setMoveDirection(-1);
+            // RoomModel.hideRoom(roomID.getText());
         } catch (IOException e) {
             e.printStackTrace();
         }

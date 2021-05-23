@@ -2,6 +2,7 @@ package Controllers.Dialogs;
 
 import Controllers.AppController;
 import Controllers.GameController;
+import Controllers.GameState;
 import Models.Room;
 import Models.RoomModel;
 import javafx.event.ActionEvent;
@@ -47,6 +48,9 @@ public class CreateRoomDialogController implements Initializable {
         try {
             RoomModel.createRoom(username.getText(), password.getText(), roomName.getText(),Integer.parseInt(timePickerCombo.getSelectionModel().getSelectedItem() ));
             AppController.showGameWindow();
+            GameState.setUsername(username.getText());
+            GameState.setMyTurn(true);
+            GameState.setMoveDirection(1);
             //GameController.setGameParams("1", 1, "5");
         } catch (IOException e) {
             e.printStackTrace();

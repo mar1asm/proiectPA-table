@@ -11,23 +11,21 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         ServerConnection.connect();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/App.fxml"));
         primaryStage.setTitle("Backgammon");
         primaryStage.setScene(new Scene(root, 600, 450));
         primaryStage.show();
-
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/GameView.fxml"));
-        //GameController gc = new GameController();
 //
-        //Scene scene = new Scene(gc.createContent());
-        //primaryStage.setScene(scene);
-        //primaryStage.show();
-        //gc.initGame();
+       //Parent root = FXMLLoader.load(getClass().getResource("/fxml/GameView.fxml"));
+       //GameController gc = new GameController();
+
+       //Scene scene = new Scene(gc.createContent());
+       //primaryStage.setScene(scene);
+       //primaryStage.show();
 
     }
-
 
 
     public static void main(String[] args) {
