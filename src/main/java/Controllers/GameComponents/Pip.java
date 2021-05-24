@@ -103,7 +103,10 @@ public class Pip extends Pane {
         if (!GameState.isMyTurn())
             return;
         try {
-            MoveController.pipClicked(index);
+            if(handler.isPrimaryButtonDown())
+                MoveController.pipClicked(index);
+            else
+                MoveController.removePiece(index);
         } catch (IOException e) {
             e.printStackTrace();
         }

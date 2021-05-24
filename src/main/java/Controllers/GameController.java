@@ -64,7 +64,7 @@ public class GameController implements Initializable {
         root.setPrefSize(PIP_WIDTH * 13 + 200, PIP_HEIGHT * 2);
         root.getChildren().addAll(pipGroup, pieceGroup);
 
-        Header h=new Header(screenHeight,  screenWidth);
+        Header h = new Header(screenHeight, screenWidth);
         root.getChildren().add(h);
 
         pieseScoaseAlb = new PieseScoase(6 * PIP_WIDTH, 0);
@@ -133,28 +133,44 @@ public class GameController implements Initializable {
                 }
 
             }
-            while (pieseScoaseNegru.getPieces().size()>0)
+            while (pieseScoaseNegru.getPieces().size() > 0)
                 pieseScoaseNegru.movePiece().dissapear();
-            while (pieseScoaseAlb.getPieces().size()>0)
+            while (pieseScoaseAlb.getPieces().size() > 0)
                 pieseScoaseAlb.movePiece().dissapear();
 
-            for (int j=0; j<(Integer) gameState.get("removedBlack"); j++)
-                pieseScoaseNegru.addPiece(new Piece (PieceType.BLACK));
-            for (int j=0; j<(Integer) gameState.get("removedWhite"); j++)
-                pieseScoaseAlb.addPiece(new Piece (PieceType.WHITE));
+            for (int j = 0; j < (Integer) gameState.get("removedBlack"); j++)
+                pieseScoaseNegru.addPiece(new Piece(PieceType.BLACK));
+            for (int j = 0; j < (Integer) gameState.get("removedWhite"); j++)
+                pieseScoaseAlb.addPiece(new Piece(PieceType.WHITE));
 
+            String usernameOfCurrentPlayer = (String) response.get("currentPlayer");
 
-            String usernameOfCurrentPlayer = (String)response.get("currentPlayer");
-            if(usernameOfCurrentPlayer.equals(GameState.getUsername())) {
+            int nbFinishedBlack = (int) gameState.get("finishedBlack");
+            int nbFinishedWhite = (int) gameState.get("finishedWhite");
+
+            if (nbFinishedBlack == 1 || nbFinishedWhite == 1) {
+                if (usernameOfCurrentPlayer.equals(GameState.getUsername())) {
+                    Header.appendText("You have won!");
+                } else {
+                    Header.appendText(usernameOfCurrentPlayer + " has won!");
+                }
+                return;
+            }
+
+            if (usernameOfCurrentPlayer.equals(GameState.getUsername())) {
                 boolean canMove = (boolean) response.get("canMove");
 
-                if(!canMove) {
+                if (!canMove) {
                     Map<String, Object> nextTurnRequest = new HashMap<>();
                     nextTurnRequest.put("action", "NextTurn");
                     String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
                     ServerConnection.sendToServer(messageTurn);
                 }
             }
+
+
+
+
 //            if(GameState.isMyTurn()) {
 //                MoveController.highlightPieces(true);
 //            }

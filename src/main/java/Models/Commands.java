@@ -26,12 +26,18 @@ public class Commands {
         System.out.println(loginResponseString);
     }
 
-    public static void movePiece(int from, int to) throws IOException {
+    public static void movePiece(int from, int to, int dice) throws IOException {
         Map<String, Object> moveRequest = new HashMap<>();
         Map<String, Object> moveParams = new HashMap<>();
-        int dice = Math.abs(to - from);
+
+
         moveParams.put("from", from);
         moveParams.put("to", to);
+
+//        if(to == 25) to--;
+//        if(from == -2) from++;
+//        int dice = Math.abs(to - from);
+
         moveParams.put("diceUsed", dice);
 
         moveRequest.put("action", "MovePiece");

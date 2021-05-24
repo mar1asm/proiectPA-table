@@ -76,17 +76,49 @@ public class MoveController {
         return false;
     }
 
+
+    public static void removePiece(int from) throws IOException {
+        if (!isHome()) return;
+
+        if(checkPossibleMove(from, GameState.getDie1())) {
+            if(GameState.getMoveDirection() == 1) {
+                movePiece(from, 25, GameState.getDie1());
+            }
+            else {
+                movePiece(from, -2, GameState.getDie2());
+            }
+
+            return;
+        }
+
+        if(checkPossibleMove(from, GameState.getDie2())) {
+            if(GameState.getMoveDirection() == 1) {
+                movePiece(from, 25, GameState.getDie2());
+            }
+            else {
+                movePiece(from, -2, GameState.getDie2());
+            }
+
+            return;
+        }
+    }
+
     public static boolean isHome() {
-        if (
-                GameState.getMoveDirection() == 1) {
+        if (GameState.getMoveDirection() == -1) {
+
+            if(pieseScoaseNegru.getPieces().size() > 0) return false;
+
             for (int i = 6; i < 24; i++)
-                if (pips.get(i).getPiecesType() == 1)
+                if (pips.get(i).getPiecesType() == -1)
                     return false;
             return true;
         }
-        if (GameState.getMoveDirection() == -1) {
+        if (GameState.getMoveDirection() == 1) {
+
+            if(pieseScoaseAlb.getPieces().size() > 0) return false;
+
             for (int i = 0; i < 18; i++)
-                if (pips.get(i).getPiecesType() == -1)
+                if (pips.get(i).getPiecesType() == 1)
                     return false;
             return true;
         }
@@ -136,8 +168,15 @@ public class MoveController {
         }
         if (!pips.get(index).isHighlighted())
             return;
-        pips.get(from+ GameState.getDie1() * GameState.getMoveDirection()).setHighlighted(false);
-        pips.get(from+ GameState.getDie2() * GameState.getMoveDirection()).setHighlighted(false);
+
+        int pipDice1 = from + GameState.getDie1() * GameState.getMoveDirection();
+        int pipDice2 = from + GameState.getDie2() * GameState.getMoveDirection();
+
+        if (pipDice1 >= 0 && pipDice1 <= 23)
+            pips.get(pipDice1).setHighlighted(false);
+
+        if (pipDice2 >= 0 && pipDice2 <= 23)
+            pips.get(pipDice2).setHighlighted(false);
         to = index;
         move(from, to);
         from = -3;
@@ -150,7 +189,7 @@ public class MoveController {
             GameState.setDice(0, GameState.getDie2());
         else if (Math.abs(to - from) == GameState.getDie2())
             GameState.setDice(GameState.getDie1(), 0);
-        movePiece(from, to);
+        movePiece(from, to, Math.abs(to - from));
 
         if (GameState.getDie1() == 0 && GameState.getDie2() == 0) {
             GameState.setMyTurn(false);
