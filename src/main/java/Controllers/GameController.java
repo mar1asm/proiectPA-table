@@ -48,7 +48,7 @@ public class GameController implements Initializable {
     private final Color light = Color.valueOf("#70300d");
 
 
-    int screenWidth = (int) Screen.getPrimary().getBounds().getWidth() - 100;
+    int screenWidth = (int) Screen.getPrimary().getBounds().getWidth() - 200;
     int screenHeight = (int) Screen.getPrimary().getBounds().getHeight() - 70;
 
     public static PieseScoase pieseScoaseAlb;
@@ -62,11 +62,11 @@ public class GameController implements Initializable {
 
 
         Pane root = new Pane();
-        root.setPrefSize(PIP_WIDTH * 13, PIP_HEIGHT * 2);
+        root.setPrefSize(PIP_WIDTH * 13 + 200, PIP_HEIGHT * 2);
         root.getChildren().addAll(pipGroup, pieceGroup);
 
-        //Header h=new Header(100, screenWidth);
-        //root.getChildren().add(h);
+        Header h=new Header(screenHeight,  screenWidth);
+        root.getChildren().add(h);
 
         pieseScoaseAlb = new PieseScoase(6 * PIP_WIDTH, 0);
         pieseScoaseNegru = new PieseScoase(6 * PIP_WIDTH, PIP_HEIGHT);

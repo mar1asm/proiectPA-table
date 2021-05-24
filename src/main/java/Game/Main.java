@@ -20,7 +20,7 @@ public class Main extends Application {
 //
        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/GameView.fxml"));
        //GameController gc = new GameController();
-
+////
        //Scene scene = new Scene(gc.createContent());
        //primaryStage.setScene(scene);
        //primaryStage.show();

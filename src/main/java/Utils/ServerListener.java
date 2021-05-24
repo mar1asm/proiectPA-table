@@ -1,5 +1,6 @@
 package Utils;
 
+import Controllers.GameComponents.Header;
 import Controllers.GameState;
 import Controllers.MoveController;
 
@@ -36,6 +37,7 @@ public class ServerListener implements Runnable {
                         int die1 = (Integer) msg.get("die1");
                         int die2 = (Integer) msg.get("die2");
                         GameState.setDice(die1, die2);
+                        Header.appendText(username+" rolled ("+ die1+","+die2+")" );
                         if (username.equals(GameState.getUsername())) {
                             GameState.setMyTurn(true);
                             MoveController.highlightPieces(true);
