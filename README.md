@@ -11,7 +11,11 @@ Acesta este meniul principal, unde poti vedea camerele de joc curente
 
 
 Acesta este meniul 
+
 ![alt_text](./Crearecamera.png)
+
+
+Câteva screenshot-uri din timpul jocului
 
 ![alt text](./ExempluJoc1.png)
 
