@@ -94,6 +94,7 @@ public class MoveController {
     }
 
     public static void pipClicked(int index) throws IOException {
+        System.out.println("AUUUUU");
         if (index == -1 || index == 24) {
             if (index == -1 && GameState.getMoveDirection() != 1) return;
             if (index == 24 && GameState.getMoveDirection() != -1) return;
@@ -156,7 +157,7 @@ public class MoveController {
             Map<String, Object> nextTurnRequest = new HashMap<>();
             nextTurnRequest.put("action", "NextTurn");
             String message = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
-            ServerConnection.sendToServer(message);
+            //ServerConnection.sendToServer(message);
         }
 
 //       Piece piece = pips.get(from).movePiece();
