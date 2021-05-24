@@ -27,20 +27,27 @@ public class MoveController {
         if (die == 0)
             return false;
         int to = from + die * GameState.getMoveDirection();
-        return to <= 23 && to >= 0 && (pips.get(to).isEmpty() || pips.get(to).getPiecesType() == pips.get(from).getPiecesType() || pips.get(to).getPieces().size() == 1);
+        int pieceTypeFrom;
+        if (from == -1)
+            pieceTypeFrom = 1;
+        else if (from == 24)
+            pieceTypeFrom = -1;
+        else
+            pieceTypeFrom = pips.get(from).getPiecesType();
+        return to <= 23 && to >= 0 && (pips.get(to).isEmpty() || pips.get(to).getPiecesType() == pieceTypeFrom || pips.get(to).getPieces().size() == 1);
 
     }
 
     public static void pipClicked(int index) throws IOException {
-        if(index == -1 || index == 24) {
-            if(index == -1 && GameState.getMoveDirection() != 1) return;
-            if(index == 24 && GameState.getMoveDirection() != -1) return;
+        if (index == -1 || index == 24) {
+            if (index == -1 && GameState.getMoveDirection() != 1) return;
+            if (index == 24 && GameState.getMoveDirection() != -1) return;
 
 
         }
 
-        if(GameState.getMoveDirection() == 1 && pieseScoaseAlb.getPieces().size() != 0 && index == -1) return;
-        if(GameState.getMoveDirection() == -1 && pieseScoaseNegru.getPieces().size() != 0 && index != 24) return;
+        if (GameState.getMoveDirection() == 1 && pieseScoaseAlb.getPieces().size() != 0 && index != -1) return;
+        if (GameState.getMoveDirection() == -1 && pieseScoaseNegru.getPieces().size() != 0 && index != 24) return;
 
 
         if (from == index) {
@@ -50,7 +57,7 @@ public class MoveController {
             return;
         }
         if (from == -2) {
-            if(index != -1 && index != 24)
+            if (index != -1 && index != 24)
                 if (pips.get(index).getPiecesType() != GameState.getMoveDirection())
                     return;
             from = index;
@@ -73,7 +80,7 @@ public class MoveController {
 
     private static void move(int from, int to) throws IOException {
         if (Math.abs(to - from) == GameState.getDie1())
-            GameState.setDice(0, GameState.getDie2());
+            GameState.setDice(0, GameState.getDie2()); else
         if (Math.abs(to - from) == GameState.getDie2())
             GameState.setDice(0, GameState.getDie1());
         movePiece(from, to);
