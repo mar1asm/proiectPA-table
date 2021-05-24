@@ -148,6 +148,8 @@ public class GameController implements Initializable {
 //            if(GameState.isMyTurn()) {
 //                MoveController.highlightPieces(true);
 //            }
+
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

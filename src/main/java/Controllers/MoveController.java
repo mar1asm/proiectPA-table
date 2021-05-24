@@ -1,6 +1,7 @@
 package Controllers;
 
 import Controllers.GameComponents.Piece;
+import Controllers.GameComponents.PieceType;
 import Controllers.GameComponents.PieseScoase;
 import Controllers.GameComponents.Pip;
 import Utils.ServerConnection;
@@ -95,10 +96,16 @@ public class MoveController {
         }
         if (!pips.get(index).isHighlighted())
             return;
-        pips.get(from + GameState.getDie1() * GameState.getMoveDirection()).setHighlighted(false);
-        pips.get(from + GameState.getDie2() * GameState.getMoveDirection()).setHighlighted(false);
+        int indexPip1 = from + GameState.getDie1() * GameState.getMoveDirection();
+        if(indexPip1 >= 0 && indexPip1 < 24)
+            pips.get(indexPip1).setHighlighted(false);
+
+        int indexPip2 = from + GameState.getDie2() * GameState.getMoveDirection();
+        if(indexPip2 >= 0 && indexPip2 < 24)
+            pips.get(indexPip2).setHighlighted(false);
         to = index;
         move(from, to);
+
         from = -2;
         to = -1;
     }
@@ -117,6 +124,14 @@ public class MoveController {
             nextTurnRequest.put("action", "NextTurn");
             String message = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
             ServerConnection.sendToServer(message);
+        }
+        else {
+            if(!MoveController.checkPossibilityToMove()) {
+                Map<String, Object> nextTurnRequest = new HashMap<>();
+                nextTurnRequest.put("action", "NextTurn");
+                String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
+                ServerConnection.sendToServer(messageTurn);
+            }
         }
 
 //        Piece piece = pips.get(from).movePiece();

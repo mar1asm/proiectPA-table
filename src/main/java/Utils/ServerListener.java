@@ -39,15 +39,15 @@ public class ServerListener implements Runnable {
                         if (username.equals(GameState.getUsername())) {
                             GameState.setMyTurn(true);
                             MoveController.highlightPieces(true);
+                            Thread.sleep(500);
+                            if(!MoveController.checkPossibilityToMove()) {
+                                Map<String, Object> nextTurnRequest = new HashMap<>();
+                                nextTurnRequest.put("action", "NextTurn");
+                                String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
+                                ServerConnection.sendToServer(messageTurn);
+                            }
                             //functia asta verifica daca te poti muta din zaruri, nu verifica si daca poti iesi din casa
                             //trebiue modificata functia asta dupa
-//                            if(!MoveController.checkPossibilityToMove())
-//                            {
-//                                Map<String, Object> nextTurnRequest = new HashMap<>();
-//                                nextTurnRequest.put("action", "NextTurn");
-//                                String messageNextTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
-//                                ServerConnection.sendToServer(messageNextTurn);
-//                            }
                         } else {
                             GameState.setMyTurn(false);
                         }
@@ -57,10 +57,12 @@ public class ServerListener implements Runnable {
                         //     Game
                         //     // waitForMove();
                         //     break;
+
+
                     default:
                         break;
                 }
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
