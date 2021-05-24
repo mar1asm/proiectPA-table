@@ -37,7 +37,15 @@ public class ServerListener implements Runnable {
                         int die1 = (Integer) msg.get("die1");
                         int die2 = (Integer) msg.get("die2");
                         GameState.setDice(die1, die2);
-                        Header.appendText(username+" rolled ("+ die1+","+die2+")" );
+                        String text;
+                        if (Header.isEmpty())
+                            Header.appendText("Game started");
+                        if (username.equals(GameState.getUsername()))
+                            text = "You rolled (" + die1 + "," + die2 + ")";
+                        else
+                            text = username + " rolled (" + die1 + "," + die2 + ")";
+                        Header.appendText(text);
+
                         if (username.equals(GameState.getUsername())) {
                             GameState.setMyTurn(true);
                             MoveController.highlightPieces(true);

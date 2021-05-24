@@ -16,7 +16,7 @@ import static Models.Commands.movePiece;
 
 public class MoveController {
     private static List<Pip> pips;
-    private static int from = -2;
+    private static int from = -3;
     private static int to = -1;
 
     MoveController(List<Pip> pips) {
@@ -25,9 +25,9 @@ public class MoveController {
 
 
     public static void highlightPieces(boolean highlight) {
-        for(var pip : pips) {
-            if(pip.getPiecesType() == GameState.getMoveDirection()) {
-                for(var piece : pip.getPieces()) {
+        for (var pip : pips) {
+            if (pip.getPiecesType() == GameState.getMoveDirection()) {
+                for (var piece : pip.getPieces()) {
                     piece.highlight(highlight);
                 }
             }
@@ -39,6 +39,18 @@ public class MoveController {
             return false;
         int to = from + die * GameState.getMoveDirection();
         int pieceTypeFrom;
+
+        if (isHome()) {
+            if (to < 0 && GameState.getMoveDirection() == -1)
+                return true;
+            if (to > 23 && GameState.getMoveDirection() == 1)
+                return true;
+        }
+        if (to < 0 && GameState.getMoveDirection() == -1 && isHome())
+            return true;
+        if (to > 23 && GameState.getMoveDirection() == -1 && isHome())
+            return true;
+
         if (from == -1)
             pieceTypeFrom = 1;
         else if (from == 24)
@@ -50,43 +62,35 @@ public class MoveController {
     }
 
     public static boolean checkPossibilityToMove() {
-
-        if(GameState.getMoveDirection() == PieceType.BLACK.getMoveDirection()) {
-            if(pieseScoaseNegru.getPieces().size() > 0) {
-                if(checkPossibleMove(24, GameState.getDie1())) {
-                    return  true;
-                }
-                if(checkPossibleMove(24, GameState.getDie2())) {
-                    return  true;
-                }
-                return false;
-            }
-        }
-        if(GameState.getMoveDirection() == PieceType.WHITE.getMoveDirection()) {
-            if(pieseScoaseAlb.getPieces().size() > 0) {
-                if(checkPossibleMove(-1, GameState.getDie1())) {
-                    return  true;
-                }
-                if(checkPossibleMove(-1, GameState.getDie2())) {
-                    return  true;
-                }
-                return false;
-            }
-        }
-
-
-        for(int i = 0 ; i < 24; ++i) {
+        for (int i = 0; i < 24; ++i) {
             var pip = pips.get(i);
-            if(pip.getPiecesType() == GameState.getMoveDirection()) {
-                if(checkPossibleMove(i, GameState.getDie1())) {
+            if (pip.getPiecesType() == GameState.getMoveDirection()) {
+                if (checkPossibleMove(i, GameState.getDie1())) {
                     return true;
                 }
-                if(checkPossibleMove(i, GameState.getDie2())) {
+                if (checkPossibleMove(i, GameState.getDie2())) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public static boolean isHome() {
+        if (
+                GameState.getMoveDirection() == 1) {
+            for (int i = 6; i < 24; i++)
+                if (pips.get(i).getPiecesType() == 1)
+                    return false;
+            return true;
+        }
+        if (GameState.getMoveDirection() == -1) {
+            for (int i = 0; i < 18; i++)
+                if (pips.get(i).getPiecesType() == -1)
+                    return false;
+            return true;
+        }
+        return true;
     }
 
     public static void pipClicked(int index) throws IOException {
@@ -97,48 +101,53 @@ public class MoveController {
 
         }
 
-        if (GameState.getMoveDirection() == 1 && pieseScoaseAlb.getPieces().size() != 0 && index != -1 && from == -2) return;
-        if (GameState.getMoveDirection() == -1 && pieseScoaseNegru.getPieces().size() != 0 && index != 24 && from == -2) return;
+        if (GameState.getMoveDirection() == 1 && pieseScoaseAlb.getPieces().size() != 0 && index != -1 && from == -3)
+            return;
+        if (GameState.getMoveDirection() == -1 && pieseScoaseNegru.getPieces().size() != 0 && index != 24 && from == -3)
+            return;
 
+        int toDie1 = index + GameState.getDie1() * GameState.getMoveDirection();
+        int toDie2 = index + GameState.getDie2() * GameState.getMoveDirection();
 
         if (from == index) {
-            pips.get(from + GameState.getDie1()).setHighlighted(false);
-            pips.get(from + GameState.getDie2()).setHighlighted(false);
-            from = -2;
+            pips.get(toDie1).setHighlighted(false);
+            pips.get(toDie2).setHighlighted(false);
+            from = -3;
             return;
         }
-        if (from == -2) {
+        if (from == -3) {
             if (index != -1 && index != 24)
                 if (pips.get(index).getPiecesType() != GameState.getMoveDirection())
                     return;
             from = index;
-            if (checkPossibleMove(from, GameState.getDie1()))
-                pips.get(from + GameState.getDie1() * GameState.getMoveDirection()).setHighlighted(true);
-            if (checkPossibleMove(from, GameState.getDie2()))
-                pips.get(from + GameState.getDie2() * GameState.getMoveDirection()).setHighlighted(true);
+            boolean movesPossible = false;
+            if (checkPossibleMove(from, GameState.getDie1())) {
+                pips.get(toDie1).setHighlighted(true);
+                movesPossible = true;
+            }
+            if (checkPossibleMove(from, GameState.getDie2())) {
+                pips.get(toDie2).setHighlighted(true);
+                movesPossible = true;
+            }
+            if (!movesPossible)
+                from = -3;
             return;
         }
         if (!pips.get(index).isHighlighted())
             return;
-        int indexPip1 = from + GameState.getDie1() * GameState.getMoveDirection();
-        if(indexPip1 >= 0 && indexPip1 < 24)
-            pips.get(indexPip1).setHighlighted(false);
-
-        int indexPip2 = from + GameState.getDie2() * GameState.getMoveDirection();
-        if(indexPip2 >= 0 && indexPip2 < 24)
-            pips.get(indexPip2).setHighlighted(false);
+        pips.get(from+ GameState.getDie1() * GameState.getMoveDirection()).setHighlighted(false);
+        pips.get(from+ GameState.getDie2() * GameState.getMoveDirection()).setHighlighted(false);
         to = index;
         move(from, to);
-
-        from = -2;
+        from = -3;
         to = -1;
     }
 
 
     private static void move(int from, int to) throws IOException {
         if (Math.abs(to - from) == GameState.getDie1())
-            GameState.setDice(0, GameState.getDie2()); else
-        if (Math.abs(to - from) == GameState.getDie2())
+            GameState.setDice(0, GameState.getDie2());
+        else if (Math.abs(to - from) == GameState.getDie2())
             GameState.setDice(GameState.getDie1(), 0);
         movePiece(from, to);
 

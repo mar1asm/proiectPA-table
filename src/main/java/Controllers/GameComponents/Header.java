@@ -43,6 +43,10 @@ public class Header extends Pane {
         log.clear();
     }
 
+    public static boolean isEmpty(){
+        return log.getText().length()==0;
+    }
+
     public static void appendText(String text){
         log.appendText(text+"\n");
     }
