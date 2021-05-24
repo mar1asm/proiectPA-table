@@ -1,6 +1,7 @@
 package Controllers;
 
 import Controllers.GameComponents.*;
+import Utils.ServerConnection;
 import Utils.ServerListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.Initializable;
@@ -9,11 +10,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static Utils.ServerConnection.objectMapper;
 import static javafx.application.Platform.runLater;
@@ -145,12 +144,33 @@ public class GameController implements Initializable {
                 pieseScoaseAlb.addPiece(new Piece (PieceType.WHITE));
 
 
+            String usernameOfCurrentPlayer = (String)response.get("currentPlayer");
+            if(usernameOfCurrentPlayer.equals(GameState.getUsername())) {
+                boolean canMove = (boolean) response.get("canMove");
+
+                if(!canMove) {
+                    Map<String, Object> nextTurnRequest = new HashMap<>();
+                    nextTurnRequest.put("action", "NextTurn");
+                    String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
+                    ServerConnection.sendToServer(messageTurn);
+                }
+            }
 //            if(GameState.isMyTurn()) {
 //                MoveController.highlightPieces(true);
 //            }
-
+//            if(GameState.isMyTurn()) {
+//                Thread.sleep(500);
+//                if(!MoveController.checkPossibilityToMove()) {
+//                    Map<String, Object> nextTurnRequest = new HashMap<>();
+//                    nextTurnRequest.put("action", "NextTurn");
+//                    String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
+//                    ServerConnection.sendToServer(messageTurn);
+//                }
+//            }
 
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

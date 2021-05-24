@@ -50,6 +50,31 @@ public class MoveController {
     }
 
     public static boolean checkPossibilityToMove() {
+
+        if(GameState.getMoveDirection() == PieceType.BLACK.getMoveDirection()) {
+            if(pieseScoaseNegru.getPieces().size() > 0) {
+                if(checkPossibleMove(24, GameState.getDie1())) {
+                    return  true;
+                }
+                if(checkPossibleMove(24, GameState.getDie2())) {
+                    return  true;
+                }
+                return false;
+            }
+        }
+        if(GameState.getMoveDirection() == PieceType.WHITE.getMoveDirection()) {
+            if(pieseScoaseAlb.getPieces().size() > 0) {
+                if(checkPossibleMove(-1, GameState.getDie1())) {
+                    return  true;
+                }
+                if(checkPossibleMove(-1, GameState.getDie2())) {
+                    return  true;
+                }
+                return false;
+            }
+        }
+
+
         for(int i = 0 ; i < 24; ++i) {
             var pip = pips.get(i);
             if(pip.getPiecesType() == GameState.getMoveDirection()) {
@@ -61,7 +86,6 @@ public class MoveController {
                 }
             }
         }
-
         return false;
     }
 
@@ -125,16 +149,8 @@ public class MoveController {
             String message = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
             ServerConnection.sendToServer(message);
         }
-        else {
-            if(!MoveController.checkPossibilityToMove()) {
-                Map<String, Object> nextTurnRequest = new HashMap<>();
-                nextTurnRequest.put("action", "NextTurn");
-                String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
-                ServerConnection.sendToServer(messageTurn);
-            }
-        }
 
-//        Piece piece = pips.get(from).movePiece();
+//       Piece piece = pips.get(from).movePiece();
 //        pips.get(to).addPiece(piece);
     }
 

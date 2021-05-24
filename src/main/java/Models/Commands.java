@@ -29,8 +29,10 @@ public class Commands {
     public static void movePiece(int from, int to) throws IOException {
         Map<String, Object> moveRequest = new HashMap<>();
         Map<String, Object> moveParams = new HashMap<>();
+        int dice = Math.abs(to - from);
         moveParams.put("from", from);
         moveParams.put("to", to);
+        moveParams.put("diceUsed", dice);
 
         moveRequest.put("action", "MovePiece");
         moveRequest.put("params", moveParams);

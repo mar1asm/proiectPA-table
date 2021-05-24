@@ -41,13 +41,13 @@ public class ServerListener implements Runnable {
                         if (username.equals(GameState.getUsername())) {
                             GameState.setMyTurn(true);
                             MoveController.highlightPieces(true);
-                            Thread.sleep(500);
-                            if(!MoveController.checkPossibilityToMove()) {
-                                Map<String, Object> nextTurnRequest = new HashMap<>();
-                                nextTurnRequest.put("action", "NextTurn");
-                                String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
-                                ServerConnection.sendToServer(messageTurn);
-                            }
+//                            Thread.sleep(500);
+//                            if(!MoveController.checkPossibilityToMove()) {
+//                                Map<String, Object> nextTurnRequest = new HashMap<>();
+//                                nextTurnRequest.put("action", "NextTurn");
+//                                String messageTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
+//                                ServerConnection.sendToServer(messageTurn);
+//                            }
                             //functia asta verifica daca te poti muta din zaruri, nu verifica si daca poti iesi din casa
                             //trebiue modificata functia asta dupa
                         } else {
@@ -64,7 +64,7 @@ public class ServerListener implements Runnable {
                     default:
                         break;
                 }
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException  e) {
                 e.printStackTrace();
             }
         }
