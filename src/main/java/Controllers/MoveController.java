@@ -10,8 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static Controllers.GameController.pieseScoaseAlb;
-import static Controllers.GameController.pieseScoaseNegru;
+import static Controllers.GameController.*;
 import static Models.Commands.movePiece;
 
 public class MoveController {
@@ -21,6 +20,17 @@ public class MoveController {
 
     MoveController(List<Pip> pips) {
         MoveController.pips = pips;
+    }
+
+
+    public static void highlightPieces(boolean highlight) {
+        for(var pip : pips) {
+            if(pip.getPiecesType() == GameState.getMoveDirection()) {
+                for(var piece : pip.getPieces()) {
+                    piece.highlight(highlight);
+                }
+            }
+        }
     }
 
     private static boolean checkPossibleMove(int from, int die) {
@@ -38,6 +48,22 @@ public class MoveController {
 
     }
 
+    public static boolean checkPossibilityToMove() {
+        for(int i = 0 ; i < 24; ++i) {
+            var pip = pips.get(i);
+            if(pip.getPiecesType() == GameState.getMoveDirection()) {
+                if(checkPossibleMove(i, GameState.getDie1())) {
+                    return true;
+                }
+                if(checkPossibleMove(i, GameState.getDie2())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static void pipClicked(int index) throws IOException {
         if (index == -1 || index == 24) {
             if (index == -1 && GameState.getMoveDirection() != 1) return;
@@ -46,8 +72,8 @@ public class MoveController {
 
         }
 
-        if (GameState.getMoveDirection() == 1 && pieseScoaseAlb.getPieces().size() != 0 && index != -1) return;
-        if (GameState.getMoveDirection() == -1 && pieseScoaseNegru.getPieces().size() != 0 && index != 24) return;
+        if (GameState.getMoveDirection() == 1 && pieseScoaseAlb.getPieces().size() != 0 && index != -1 && from == -2) return;
+        if (GameState.getMoveDirection() == -1 && pieseScoaseNegru.getPieces().size() != 0 && index != 24 && from == -2) return;
 
 
         if (from == index) {
@@ -82,7 +108,7 @@ public class MoveController {
         if (Math.abs(to - from) == GameState.getDie1())
             GameState.setDice(0, GameState.getDie2()); else
         if (Math.abs(to - from) == GameState.getDie2())
-            GameState.setDice(0, GameState.getDie1());
+            GameState.setDice(GameState.getDie1(), 0);
         movePiece(from, to);
 
         if (GameState.getDie1() == 0 && GameState.getDie2() == 0) {

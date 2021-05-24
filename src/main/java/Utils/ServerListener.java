@@ -1,7 +1,7 @@
 package Utils;
 
 import Controllers.GameState;
-import Utils.ServerConnection;
+import Controllers.MoveController;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import static Utils.ServerConnection.objectMapper;
 public class ServerListener implements Runnable {
     @Override
     public void run() {
+        boolean firstTime = true;
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -37,7 +38,16 @@ public class ServerListener implements Runnable {
                         GameState.setDice(die1, die2);
                         if (username.equals(GameState.getUsername())) {
                             GameState.setMyTurn(true);
-
+                            MoveController.highlightPieces(true);
+                            //functia asta verifica daca te poti muta din zaruri, nu verifica si daca poti iesi din casa
+                            //trebiue modificata functia asta dupa
+//                            if(!MoveController.checkPossibilityToMove())
+//                            {
+//                                Map<String, Object> nextTurnRequest = new HashMap<>();
+//                                nextTurnRequest.put("action", "NextTurn");
+//                                String messageNextTurn = ServerConnection.objectMapper.writeValueAsString(nextTurnRequest);
+//                                ServerConnection.sendToServer(messageNextTurn);
+//                            }
                         } else {
                             GameState.setMyTurn(false);
                         }

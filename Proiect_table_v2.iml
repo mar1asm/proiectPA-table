@@ -11,25 +11,21 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="javafx-fxml">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/15/javafx-fxml-15.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/15/javafx-fxml-15-win.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/15/javafx-controls-15.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/15/javafx-controls-15-win.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/15/javafx-graphics-15.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/15/javafx-graphics-15-win.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-base/15/javafx-base-15.jar!/" />
-          <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-base/15/javafx-base-15-win.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.4" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../javafx-sdk-11.0.2/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../javafx-sdk-11.0.2/lib" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/../javafx-sdk-11.0.2/lib" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/../javafx-sdk-11.0.2/lib" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>

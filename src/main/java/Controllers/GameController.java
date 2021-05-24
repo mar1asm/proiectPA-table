@@ -143,6 +143,11 @@ public class GameController implements Initializable {
                 pieseScoaseNegru.addPiece(new Piece (PieceType.BLACK));
             for (int j=0; j<(Integer) gameState.get("removedWhite"); j++)
                 pieseScoaseAlb.addPiece(new Piece (PieceType.WHITE));
+
+
+//            if(GameState.isMyTurn()) {
+//                MoveController.highlightPieces(true);
+//            }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

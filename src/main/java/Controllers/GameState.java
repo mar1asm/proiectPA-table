@@ -12,10 +12,37 @@ public class GameState {
 
     private static int die1;
     private static int die2;
+    private static int die1Uses = 0;
+    private static int die2Uses = 0;
 
     public static void setDice(int d1, int d2) {
-        die1 = d1;
-        die2 = d2;
+        if(d1 != 0 && d2 != 0) {
+            if(d1 == d2) {
+                die1Uses = 2;
+                die2Uses = 2;
+            }
+            else {
+                die1Uses = 1;
+                die2Uses = 1;
+            }
+        }
+        if(d1 == 0) {
+            die1Uses--;
+            if(die1Uses == 0)
+                die1 = 0;
+        }
+        else {
+            die1 = d1;
+        }
+        if(d2 == 0) {
+            die2Uses--;
+            if(die2Uses == 0) {
+                die2 = 0;
+            }
+        }
+        else {
+            die2 = d2;
+        }
     }
 
     public static int getDie1() {
